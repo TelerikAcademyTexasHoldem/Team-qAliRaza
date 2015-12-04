@@ -2,10 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using Helpers;
     using Logic;
     using Logic.Cards;
     using Logic.Players;
+    using TexasHoldem.AI.IntelligentPlayer.Helpers;
+    using TexasHoldem.Logic.Extensions;
 
     public class IntelligentPlayer : BasePlayer
     {
@@ -37,26 +38,33 @@
 
         private PlayerAction preflopLogic(Card firstCard, Card secondCard, GetTurnContext context)
         {
-            bool sameCardsSuit = CardsChecker.CheckIfTheCardsSuitIsTheSame(new List<Card>() {firstCard, secondCard});
-            bool sameCardsType = CardsChecker.CheckIfTheCardsTypeIsTheSame(new List<Card>() {firstCard, secondCard});
+            var playHand = HandStrengthValuation.PreFlop(this.FirstCard, this.SecondCard);
+            if (playHand == CardValuationType.Unplayable)
+            {
+                if (context.CanCheck)
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+                else
+                {
+                    return PlayerAction.Fold();
+                }
+            }
 
-            if (sameCardsSuit)
+            if (playHand == CardValuationType.Risky)
             {
-                return PlayerAction.Raise(8);
+                var smallBlindsTimes = RandomProvider.Next(1, 5);
+                return PlayerAction.Raise(context.SmallBlind * smallBlindsTimes);
             }
-            else if (sameCardsType)
+
+            if (playHand == CardValuationType.Recommended)
             {
-                return PlayerAction.Raise(25);
+                var smallBlindsTimes = RandomProvider.Next(6, 14);
+                return PlayerAction.Raise(context.SmallBlind * smallBlindsTimes);
             }
-            else if (sameCardsType == true && sameCardsSuit == true)
-            {
-                return PlayerAction.Raise(33);
-            }
-            else
-            {
-                return PlayerAction.CheckOrCall();
-            }
+            return PlayerAction.Fold();
         }
+
         private PlayerAction flopLogic(Card firstCard, Card secondCard, GetTurnContext context)
         {
 

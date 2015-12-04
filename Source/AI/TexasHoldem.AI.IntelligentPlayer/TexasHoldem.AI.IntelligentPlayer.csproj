@@ -39,7 +39,8 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\CardsChecker.cs" />
+    <Compile Include="Helpers\CardValuationType.cs" />
+    <Compile Include="Helpers\HandStrengthValuation.cs" />
     <Compile Include="IntelligentPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
