@@ -8,7 +8,7 @@
     using TexasHoldem.AI.IntelligentPlayer.Helpers;
     using TexasHoldem.Logic.Extensions;
 
-    public class IntelligentPlayer : BasePlayer
+    public partial class IntelligentPlayer : BasePlayer
     {
         public override string Name { get; }
 
@@ -19,86 +19,45 @@
 
             if (context.RoundType == GameRoundType.PreFlop)
             {
-                return preflopLogic(firstCard, secondCard, context);
+                return PreflopLogic(firstCard, secondCard, context);
             }
             else if (context.RoundType == GameRoundType.Flop)
             {
-                return flopLogic(firstCard, secondCard, context);
+                return FlopLogic(firstCard, secondCard, context);
             }
             else if (context.RoundType == GameRoundType.Turn)
             {
-                return turnLogic(firstCard, secondCard, context);
+                return TurnLogic(firstCard, secondCard, context);
             }
             else if (context.RoundType == GameRoundType.River)
             {
-                return riverLogic(firstCard, secondCard, context);
+                return RiverLogic(firstCard, secondCard, context);
             }
 
             return PlayerAction.Fold();
         }
 
-        private PlayerAction preflopLogic(Card firstCard, Card secondCard, GetTurnContext context)
-        {
-
-            var playHand = HandStrengthValuation.PreFlop(this.FirstCard, this.SecondCard);
-            if (playHand == CardValuationType.Unplayable)
-            {
-                if (context.CanCheck)
-                {
-                    return PlayerAction.CheckOrCall();
-                }
-                else
-                {
-                    return PlayerAction.Fold();
-                }
-            }
-
-            if (playHand == CardValuationType.Risky)
-            {
-                if (context.MyMoneyInTheRound <= 500 && !context.CanCheck && context.PreviousRoundActions == PlayerAction.Fold())
-                {
-                    return PlayerAction.Fold();
-                }
-                var smallBlindsTimes = RandomProvider.Next(1, 4);
-                return PlayerAction.Raise(context.SmallBlind * smallBlindsTimes);
-            }
-
-            if (playHand == CardValuationType.Recommended)
-            {
-                var smallBlindsTimes = RandomProvider.Next(6, 14);
-                return PlayerAction.Raise(context.SmallBlind * smallBlindsTimes);
-            }
-
-            if (playHand == CardValuationType.NotRecommended)
-            {
-                if (!context.CanCheck && context.MyMoneyInTheRound <= 500)
-                {
-                    return PlayerAction.Fold();
-                }
-            }
-
-            // default
-            return PlayerAction.Fold();
-        }
-
-        private PlayerAction flopLogic(Card firstCard, Card secondCard, GetTurnContext context)
+        private PlayerAction FlopLogic(Card firstCard, Card secondCard, GetTurnContext context)
         {
 
             // default
-            return PlayerAction.Fold();
+            return PlayerAction.CheckOrCall();
         }
 
-        private PlayerAction turnLogic(Card firstCard, Card secondCard, GetTurnContext context)
+        private PlayerAction TurnLogic(Card firstCard, Card secondCard, GetTurnContext context)
         {
             // default
-            return PlayerAction.Fold();
+            return PlayerAction.CheckOrCall();
         }
 
-        private PlayerAction riverLogic(Card firstCard, Card secondCard, GetTurnContext context)
+        private PlayerAction RiverLogic(Card firstCard, Card secondCard, GetTurnContext context)
         {
             // default
-            return PlayerAction.Fold();
+            return PlayerAction.CheckOrCall();
         }
-
+        private int HandDefiner(Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
+        {
+            return 0;
+        }
     }
 }

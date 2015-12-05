@@ -42,6 +42,7 @@
     <Compile Include="Helpers\CardValuationType.cs" />
     <Compile Include="Helpers\HandStrengthValuation.cs" />
     <Compile Include="IntelligentPlayer.cs" />
+    <Compile Include="IntelligentPlayer1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
