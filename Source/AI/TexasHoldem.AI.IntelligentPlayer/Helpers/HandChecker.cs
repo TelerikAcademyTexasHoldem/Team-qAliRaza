@@ -29,12 +29,62 @@
             {
                 return HandRankType.TwoPairs;
             }
+            else if (IsThreeOfAKind(cards, communityCards))
+            {
+                return HandRankType.ThreeOfAKind;
+            }
             else
             {
                 return HandRankType.HighCard;
             }
 
             return HandRankType.HighCard;
+        }
+
+        private static bool IsThreeOfAKind(List<Card> ownCards, IReadOnlyCollection<Card> communityCards)
+        {
+            bool isThreeOfAKind = false;
+            bool hasToBreak = false;
+            if (ownCards[0].Type == ownCards[1].Type)
+            {
+                for (int i = 0; i < communityCards.Count; i++)
+                {
+                    if (communityCards.ElementAt(i).Type == ownCards[0].Type)
+                    {
+                        isThreeOfAKind = true;
+                        break;
+                    }
+                }
+            }
+
+            if (isThreeOfAKind)
+            {
+                return true;
+            }
+
+            for (int i = 0; i < ownCards.Count; i++)
+            {
+                if (hasToBreak)
+                {
+                    break;
+                }
+                int num = 1;
+                for (int j = 0; j < communityCards.Count; j++)
+                {
+                    if (num == 2)
+                    {
+                        isThreeOfAKind = true;
+                        hasToBreak = true;
+                        break;
+                    }
+                    if (communityCards.ElementAt(j).Type == ownCards[i].Type)
+                    {
+                        num++;
+                    }
+                }
+            }
+
+            return isThreeOfAKind;
         }
 
         private static bool AreTwoPairs(List<Card> ownCards, IReadOnlyCollection<Card> communityCards)

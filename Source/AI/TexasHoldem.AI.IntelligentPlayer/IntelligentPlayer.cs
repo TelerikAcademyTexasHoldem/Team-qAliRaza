@@ -42,14 +42,19 @@
         {
             var playHand = HandStrengthValuation.PreFlop(this.FirstCard, this.SecondCard);
             var handRank = HandChecker.CheckHand(firstCard, secondCard, CommunityCards);
-
+            
+            // TODO: Change raise values
             if (handRank == HandRankType.Pair)
             {
                 return PlayerAction.Raise(1);
             }
             else if (handRank == HandRankType.TwoPairs)
             {
-                return PlayerAction.Raise(105);
+                return PlayerAction.Raise(2);
+            }
+            else if (handRank == HandRankType.ThreeOfAKind)
+            {
+                return PlayerAction.Raise(99);
             }
             // default
             return PlayerAction.CheckOrCall();
