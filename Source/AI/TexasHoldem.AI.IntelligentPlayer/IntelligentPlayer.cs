@@ -1,6 +1,7 @@
 ﻿namespace TexasHoldem.AI.IntelligentPlayer
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using Logic;
     using Logic.Cards;
@@ -39,7 +40,13 @@
 
         private PlayerAction FlopLogic(Card firstCard, Card secondCard, GetTurnContext context)
         {
+            var playHand = HandStrengthValuation.PreFlop(this.FirstCard, this.SecondCard);
+            var handRank = HandChecker.CheckHand(firstCard, secondCard,CommunityCards);
 
+            if (handRank == HandRankType.Pair)
+            {
+                return PlayerAction.Raise(1);
+            }
             // default
             return PlayerAction.CheckOrCall();
         }

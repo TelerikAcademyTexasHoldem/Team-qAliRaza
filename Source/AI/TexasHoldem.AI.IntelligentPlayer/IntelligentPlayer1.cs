@@ -24,29 +24,26 @@
                     return PlayerAction.Fold();
                 }
             }
-
-            if (playHand == CardValuationType.Risky)
-            {
-                if (context.MoneyLeft <= 500 && !context.CanCheck)
-                {
-                    return PlayerAction.Fold();
-                }
-                var smallBlindsTimes = RandomProvider.Next(1, 4);
-                return PlayerAction.Raise(context.SmallBlind * smallBlindsTimes);
-            }
-
-            if (playHand == CardValuationType.Recommended)
-            {
-                var smallBlindsTimes = RandomProvider.Next(6, 14);
-                return PlayerAction.Raise(context.SmallBlind * smallBlindsTimes);
-            }
-
-            if (playHand == CardValuationType.NotRecommended)
+            else if (playHand == CardValuationType.NotRecommended)
             {
                 if (!context.CanCheck && context.MyMoneyInTheRound <= 500)
                 {
                     return PlayerAction.Fold();
                 }
+            }
+            else if (playHand == CardValuationType.Risky)
+            {
+                if (context.MoneyLeft <= 500 && !context.CanCheck)
+                {
+                    return PlayerAction.Fold();
+                }
+                var smallBlindsTimes = RandomProvider.Next(5, 15);
+                return PlayerAction.Raise(context.SmallBlind * smallBlindsTimes);
+            }
+            else if (playHand == CardValuationType.Recommended)
+            {
+                var smallBlindsTimes = RandomProvider.Next(10, 25);
+                return PlayerAction.Raise(context.SmallBlind * smallBlindsTimes);
             }
 
             // default
