@@ -11,14 +11,11 @@
     {
         private PlayerAction PreflopLogic(Card firstCard, Card secondCard, GetTurnContext context)
         {
-            if (context.MyMoneyInTheRound != context.MoneyToCall)
-            {
-                
-            }
+            
             var playHand = HandStrengthValuation.PreFlop(this.FirstCard, this.SecondCard);
             if (playHand == CardValuationType.Unplayable)
             {
-                if (context.CanCheck)
+                if (context.CurrentPot < 15 && context.MoneyLeft > 100)
                 {
                     return PlayerAction.CheckOrCall();
                 }
