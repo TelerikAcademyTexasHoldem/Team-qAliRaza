@@ -41,11 +41,15 @@
         private PlayerAction FlopLogic(Card firstCard, Card secondCard, GetTurnContext context)
         {
             var playHand = HandStrengthValuation.PreFlop(this.FirstCard, this.SecondCard);
-            var handRank = HandChecker.CheckHand(firstCard, secondCard,CommunityCards);
+            var handRank = HandChecker.CheckHand(firstCard, secondCard, CommunityCards);
 
             if (handRank == HandRankType.Pair)
             {
                 return PlayerAction.Raise(1);
+            }
+            else if (handRank == HandRankType.TwoPairs)
+            {
+                return PlayerAction.Raise(105);
             }
             // default
             return PlayerAction.CheckOrCall();

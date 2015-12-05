@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Logic;
     using Logic.Cards;
 
@@ -24,12 +25,112 @@
             {
                 return HandRankType.Pair;
             }
+            else if (AreTwoPairs(cards, communityCards))
+            {
+                return HandRankType.TwoPairs;
+            }
             else
             {
                 return HandRankType.HighCard;
             }
 
             return HandRankType.HighCard;
+        }
+
+        private static bool AreTwoPairs(List<Card> ownCards, IReadOnlyCollection<Card> communityCards)
+        {
+            int pairs = 0;
+            if (ownCards[0].Type == ownCards[1].Type)
+            {
+                ++pairs;
+                bool hasToBreak = false;
+                for (int i = 0; i < communityCards.Count; i++)
+                {
+                    if (hasToBreak)
+                    {
+                        break;
+                    }
+                    for (int j = i; j < communityCards.Count; j++)
+                    {
+                        if (communityCards.ElementAt(i).Type == communityCards.ElementAt(j).Type)
+                        {
+                            ++pairs;
+                            hasToBreak = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (pairs == 2)
+            {
+                return true;
+            }
+            else
+            {
+                pairs = 0;
+            }
+
+            for (int i = 0; i < ownCards.Count; i++)
+            {
+                for (int j = 0; j < communityCards.Count; j++)
+                {
+                    if(ownCards[i].Type == communityCards.ElementAt(j).Type)
+                    {
+                        ++pairs;
+                        break;
+                    }
+                }
+            }
+
+            if (pairs == 2)
+            {
+                return true;
+            }
+            else
+            {
+                pairs = 0;
+            }
+            bool hasToBreakLast = false;
+            for (int i = 0; i < ownCards.Count; i++)
+            {
+                if (hasToBreakLast)
+                {
+                    break;
+                }
+                for (int j = 0; j < communityCards.Count; j++)
+                {
+                    if (ownCards[i].Type == communityCards.ElementAt(j).Type)
+                    {
+                        ++pairs;
+                        hasToBreakLast = true;
+                        break;
+                    }
+                }
+            }
+            hasToBreakLast = false;
+            for (int i = 0; i < communityCards.Count; i++)
+            {
+                if (hasToBreakLast)
+                {
+                    break;
+                }
+                for (int j = i; j < communityCards.Count; j++)
+                {
+                    if (communityCards.ElementAt(i).Type == communityCards.ElementAt(j).Type)
+                    {
+                        ++pairs;
+                        hasToBreakLast = true;
+                        break;
+                    }
+                }
+            }
+
+            if (pairs == 2)
+            {
+                return true;
+            }
+            return false;
         }
 
         private static bool IsOnePair(List<Card> ownCards, IReadOnlyCollection<Card> communityCards)
