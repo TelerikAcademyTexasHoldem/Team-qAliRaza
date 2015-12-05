@@ -10,7 +10,7 @@
 
     public partial class IntelligentPlayer : BasePlayer
     {
-        public override string Name { get; }
+        public override string Name { get; } = "IntelligentPlayer." + Guid.NewGuid();
 
         public override PlayerAction GetTurn(GetTurnContext context)
         {

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using TexasHoldem.Logic;
-using TexasHoldem.Logic.Cards;
-using TexasHoldem.Logic.Players;
-using TexasHoldem.AI.IntelligentPlayer.Helpers;
-using TexasHoldem.Logic.Extensions;
-
-namespace TexasHoldem.AI.IntelligentPlayer
+﻿namespace TexasHoldem.AI.IntelligentPlayer
 {
+    using System;
+    using System.Collections.Generic;
+    using TexasHoldem.Logic;
+    using TexasHoldem.Logic.Cards;
+    using TexasHoldem.Logic.Players;
+    using TexasHoldem.AI.IntelligentPlayer.Helpers;
+    using TexasHoldem.Logic.Extensions;
     partial class IntelligentPlayer : BasePlayer
     {
         private PlayerAction PreflopLogic(Card firstCard, Card secondCard, GetTurnContext context)
