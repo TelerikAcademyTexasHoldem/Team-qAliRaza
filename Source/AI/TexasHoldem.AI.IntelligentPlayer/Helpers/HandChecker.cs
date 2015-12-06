@@ -21,33 +21,33 @@
             //    cards.Add(communityCard);
             //}
 
-            if (IsOnePair(cards, communityCards))
+            if (IsOfAKind(cards, communityCards, 4))
             {
-                return HandRankType.Pair;
+                return HandRankType.FourOfAKind;
             }
-            else if (AreTwoPairs(cards, communityCards))
+            else if (IsFullHouse(cards, communityCards))
             {
-                return HandRankType.TwoPairs;
-            }
-            else if (IsThreeOfAKind(cards, communityCards))
-            {
-                return HandRankType.ThreeOfAKind;
-            }
-            else if (IsStraight(cards, communityCards))
-            {
-                return HandRankType.Straight;
+                return HandRankType.FullHouse;
             }
             else if (IsFlush(cards, communityCards))
             {
                 return HandRankType.Flush;
             }
-            else if (IsFullHouse(cards, communityCards))
+            else if (IsStraight(cards, communityCards))
             {
-                
+                return HandRankType.Straight;
             }
-            else if (IsFourOfAKind(cards, communityCards))
+            else if (IsOfAKind(cards, communityCards, 3))
             {
-                
+                return HandRankType.ThreeOfAKind;
+            }
+            else if (AreTwoPairs(cards, communityCards))
+            {
+                return HandRankType.TwoPairs;
+            }
+            else if (IsOnePair(cards, communityCards))
+            {
+                return HandRankType.Pair;
             }
             else
             {
@@ -57,14 +57,87 @@
             return HandRankType.HighCard;
         }
 
-        private static bool IsFourOfAKind(List<Card> cards, IReadOnlyCollection<Card> communityCards)
+        private static bool IsFullHouse(List<Card> ownCards, IReadOnlyCollection<Card> communityCards)
         {
-            throw new NotImplementedException();
-        }
+            bool isFullHouse = false;
+            bool isThreeOfAKind = false;
+            bool hasToBreak = false;
+            CardType threeOfAKindCardType = ownCards[0].Type;
+            if (ownCards[0].Type == ownCards[1].Type)
+            {
+                for (int i = 0; i < communityCards.Count; i++)
+                {
+                    if (communityCards.ElementAt(i).Type == ownCards[0].Type)
+                    {
+                        isThreeOfAKind = true;
+                        threeOfAKindCardType = ownCards[0].Type;
+                        break;
+                    }
+                }
+            }
 
-        private static bool IsFullHouse(List<Card> cards, IReadOnlyCollection<Card> communityCards)
-        {
-            throw new NotImplementedException();
+            if (!isThreeOfAKind)
+            {
+                for (int i = 0; i < ownCards.Count; i++)
+                {
+                    if (hasToBreak)
+                    {
+                        break;
+                    }
+                    int num = 0;
+                    for (int j = 0; j < communityCards.Count; j++)
+                    {
+                        if (num == 2)
+                        {
+                            isThreeOfAKind = true;
+                            threeOfAKindCardType = ownCards[i].Type;
+                            hasToBreak = true;
+                            break;
+                        }
+                        if (communityCards.ElementAt(j).Type == ownCards[i].Type)
+                        {
+                            num++;
+                        }
+                    }
+                }
+            }
+
+            if (!isThreeOfAKind)
+            {
+                return false;
+            }
+            else
+            {
+                List<Card> cardsThatAreNotInTheThreeOfAKind = new List<Card>();
+                foreach (var ownCard in ownCards)
+                {
+                    if (ownCard.Type != threeOfAKindCardType)
+                    {
+                        cardsThatAreNotInTheThreeOfAKind.Add(ownCard);
+                    }
+                }
+                foreach (var communityCard in communityCards)
+                {
+                    if (communityCard.Type != threeOfAKindCardType)
+                    {
+                        cardsThatAreNotInTheThreeOfAKind.Add(communityCard);
+                    }
+                }
+
+                for (int i = 0; i < cardsThatAreNotInTheThreeOfAKind.Count; i++)
+                {
+                    for (int j = i; j < cardsThatAreNotInTheThreeOfAKind.Count; j++)
+                    {
+                        if (cardsThatAreNotInTheThreeOfAKind[i].Type == cardsThatAreNotInTheThreeOfAKind[j].Type)
+                        {
+                            isFullHouse = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return isFullHouse;
         }
 
         private static bool IsFlush(List<Card> cards, IReadOnlyCollection<Card> communityCards)
@@ -164,23 +237,46 @@
             //return isStraight;
         }
 
-        private static bool IsThreeOfAKind(List<Card> ownCards, IReadOnlyCollection<Card> communityCards)
+        private static bool IsOfAKind(List<Card> ownCards, IReadOnlyCollection<Card> communityCards, int kind)
         {
-            bool isThreeOfAKind = false;
+            bool isOfAKind = false;
             bool hasToBreak = false;
-            if (ownCards[0].Type == ownCards[1].Type)
+            if (kind == 3)
             {
-                for (int i = 0; i < communityCards.Count; i++)
+                if (ownCards[0].Type == ownCards[1].Type)
                 {
-                    if (communityCards.ElementAt(i).Type == ownCards[0].Type)
+                    for (int i = 0; i < communityCards.Count; i++)
                     {
-                        isThreeOfAKind = true;
-                        break;
+                        if (communityCards.ElementAt(i).Type == ownCards[0].Type)
+                        {
+                            isOfAKind = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (kind == 4)
+            {
+                if (ownCards[0].Type == ownCards[1].Type)
+                {
+                    int num = 0;
+                    for (int i = 0; i < communityCards.Count; i++)
+                    {
+                        if (num == 2)
+                        {
+                            isOfAKind = true;
+                            break;
+                        }
+
+                        if (communityCards.ElementAt(i).Type == ownCards[0].Type)
+                        {
+                            ++num;
+                        }
                     }
                 }
             }
 
-            if (isThreeOfAKind)
+            if (isOfAKind)
             {
                 return true;
             }
@@ -191,12 +287,12 @@
                 {
                     break;
                 }
-                int num = 1;
+                int num = 0;
                 for (int j = 0; j < communityCards.Count; j++)
                 {
-                    if (num == 2)
+                    if (num == kind - 1)
                     {
-                        isThreeOfAKind = true;
+                        isOfAKind = true;
                         hasToBreak = true;
                         break;
                     }
@@ -207,7 +303,7 @@
                 }
             }
 
-            return isThreeOfAKind;
+            return isOfAKind;
         }
 
         private static bool AreTwoPairs(List<Card> ownCards, IReadOnlyCollection<Card> communityCards)
@@ -248,7 +344,7 @@
             {
                 for (int j = 0; j < communityCards.Count; j++)
                 {
-                    if(ownCards[i].Type == communityCards.ElementAt(j).Type)
+                    if (ownCards[i].Type == communityCards.ElementAt(j).Type)
                     {
                         ++pairs;
                         break;

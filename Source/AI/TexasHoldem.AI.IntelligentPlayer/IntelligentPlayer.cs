@@ -44,7 +44,11 @@
             var handRank = HandChecker.CheckHand(firstCard, secondCard, CommunityCards);
             
             // TODO: Change raise values
-            if (handRank == HandRankType.Pair)
+            if (handRank == HandRankType.HighCard)
+            {
+                return PlayerAction.CheckOrCall();
+            }
+            else if (handRank == HandRankType.Pair)
             {
                 return PlayerAction.Raise(1);
             }
@@ -63,6 +67,15 @@
             else if (handRank == HandRankType.Flush)
             {
                 return PlayerAction.Raise(5);
+            }
+            else if (handRank == HandRankType.FullHouse)
+            {
+                return PlayerAction.Raise(6);
+            }
+            else if (handRank == HandRankType.FourOfAKind)
+            {
+                return PlayerAction.Raise(7);
+                HandRankType.
             }
             // default
             return PlayerAction.CheckOrCall();
