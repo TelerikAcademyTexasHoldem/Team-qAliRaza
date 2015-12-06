@@ -33,12 +33,135 @@
             {
                 return HandRankType.ThreeOfAKind;
             }
+            else if (IsStraight(cards, communityCards))
+            {
+                return HandRankType.Straight;
+            }
+            else if (IsFlush(cards, communityCards))
+            {
+                return HandRankType.Flush;
+            }
+            else if (IsFullHouse(cards, communityCards))
+            {
+                
+            }
+            else if (IsFourOfAKind(cards, communityCards))
+            {
+                
+            }
             else
             {
                 return HandRankType.HighCard;
             }
 
             return HandRankType.HighCard;
+        }
+
+        private static bool IsFourOfAKind(List<Card> cards, IReadOnlyCollection<Card> communityCards)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static bool IsFullHouse(List<Card> cards, IReadOnlyCollection<Card> communityCards)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static bool IsFlush(List<Card> cards, IReadOnlyCollection<Card> communityCards)
+        {
+            bool isFlush = false;
+            int foundFromTheSameSuit;
+            if (cards[0].Suit == cards[1].Suit)
+            {
+                foundFromTheSameSuit = 2;
+                for (int i = 0; i < communityCards.Count; i++)
+                {
+                    if (foundFromTheSameSuit == 5)
+                    {
+                        isFlush = true;
+                        break;
+                    }
+                    if (cards[0].Suit == communityCards.ElementAt(i).Suit)
+                    {
+                        ++foundFromTheSameSuit;
+                    }
+                }
+            }
+
+            if (isFlush)
+            {
+                foundFromTheSameSuit = 0;
+                return true;
+            }
+
+            //Checks with first card TODO: REMOVE REPETITIONS
+            foundFromTheSameSuit = 1;
+            for (int i = 0; i < communityCards.Count; i++)
+            {
+                if (foundFromTheSameSuit == 5)
+                {
+                    isFlush = true;
+                    break;
+                }
+                if (cards[0].Suit == communityCards.ElementAt(i).Suit)
+                {
+                    ++foundFromTheSameSuit;
+                }
+            }
+
+            if (isFlush)
+            {
+                foundFromTheSameSuit = 0;
+                return true;
+            }
+
+            //Checks with second card TODO: REMOVE REPETITIONS
+            foundFromTheSameSuit = 1;
+            for (int i = 0; i < communityCards.Count; i++)
+            {
+                if (foundFromTheSameSuit == 5)
+                {
+                    isFlush = true;
+                    break;
+                }
+                if (cards[1].Suit == communityCards.ElementAt(i).Suit)
+                {
+                    ++foundFromTheSameSuit;
+                }
+            }
+
+            return isFlush;
+        }
+
+        private static bool IsStraight(List<Card> cards, IReadOnlyCollection<Card> communityCards)
+        {
+            // TODO: To implement it..
+            return false;
+            //bool isStraight = false;
+            //List<Card> currentCards = new List<Card>()
+            //{
+            //    cards[0],
+            //    cards[1]
+            //};
+            //foreach (var communityCard in communityCards)
+            //{
+            //    currentCards.Add(communityCard);
+            //}
+
+            //int equalCards = 0;
+            //for (int i = 1; i <= currentCards.Count; i++)
+            //{
+            //    if ((int)currentCards[i-1].Type - 1 == (int)currentCards[i].Type - 1)
+            //    {
+            //        equalCards += 2;
+            //        for (int j = i; j < communityCards.Count; j++)
+            //        {
+
+            //        }
+            //    }
+            //}
+
+            //return isStraight;
         }
 
         private static bool IsThreeOfAKind(List<Card> ownCards, IReadOnlyCollection<Card> communityCards)

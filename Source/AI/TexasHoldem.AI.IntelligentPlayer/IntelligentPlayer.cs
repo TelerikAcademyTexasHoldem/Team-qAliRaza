@@ -54,7 +54,15 @@
             }
             else if (handRank == HandRankType.ThreeOfAKind)
             {
-                return PlayerAction.Raise(99);
+                return PlayerAction.Raise(3);
+            }
+            else if (handRank == HandRankType.Straight)
+            {
+                return PlayerAction.Raise(4);
+            }
+            else if (handRank == HandRankType.Flush)
+            {
+                return PlayerAction.Raise(5);
             }
             // default
             return PlayerAction.CheckOrCall();
