@@ -28,11 +28,11 @@
             }
             else if (context.RoundType == GameRoundType.Turn)
             {
-                return TurnLogic(firstCard, secondCard, context);
+                return FlopLogic(firstCard, secondCard, context);
             }
             else if (context.RoundType == GameRoundType.River)
             {
-                return RiverLogic(firstCard, secondCard, context);
+                return FlopLogic(firstCard, secondCard, context);
             }
 
             return PlayerAction.Fold();
@@ -42,7 +42,7 @@
         {
             var playHand = HandStrengthValuation.PreFlop(this.FirstCard, this.SecondCard);
             var handRank = HandChecker.CheckHand(firstCard, secondCard, CommunityCards);
-            
+
             // TODO: Change raise values
             if (handRank == HandRankType.HighCard)
             {
@@ -50,34 +50,33 @@
             }
             else if (handRank == HandRankType.Pair)
             {
-                return PlayerAction.Raise(1);
+                return PlayerAction.Raise(RandomProvider.Next(2,6));
             }
             else if (handRank == HandRankType.TwoPairs)
             {
-                return PlayerAction.Raise(2);
+                return PlayerAction.Raise(RandomProvider.Next(5,11));
             }
             else if (handRank == HandRankType.ThreeOfAKind)
             {
-                return PlayerAction.Raise(3);
+                return PlayerAction.Raise(RandomProvider.Next(8,20));
             }
             else if (handRank == HandRankType.Straight)
             {
-                return PlayerAction.Raise(4);
+                return PlayerAction.Raise(RandomProvider.Next(10,23));
             }
             else if (handRank == HandRankType.Flush)
             {
-                return PlayerAction.Raise(5);
+                return PlayerAction.Raise(RandomProvider.Next(11, 25));
             }
             else if (handRank == HandRankType.FullHouse)
             {
-                return PlayerAction.Raise(6);
+                return PlayerAction.Raise(RandomProvider.Next(13, 26));
             }
             else if (handRank == HandRankType.FourOfAKind)
             {
-                return PlayerAction.Raise(7);
-                HandRankType.
+                return PlayerAction.Raise(RandomProvider.Next(14, 26));
             }
-            // default
+
             return PlayerAction.CheckOrCall();
         }
 

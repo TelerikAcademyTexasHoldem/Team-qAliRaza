@@ -126,7 +126,7 @@
 
                 for (int i = 0; i < cardsThatAreNotInTheThreeOfAKind.Count; i++)
                 {
-                    for (int j = i; j < cardsThatAreNotInTheThreeOfAKind.Count; j++)
+                    for (int j = i+1; j < cardsThatAreNotInTheThreeOfAKind.Count; j++)
                     {
                         if (cardsThatAreNotInTheThreeOfAKind[i].Type == cardsThatAreNotInTheThreeOfAKind[j].Type)
                         {
